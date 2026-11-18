@@ -21,3 +21,10 @@ The trade-off is that normalisation is a plain `str.lower` and nothing else. We 
 ## The awkward edge
 
 Three paths that collide are reported as two pairs against the first-seen path, not as an all-pairs set. `find_duplicates(['/A/b', '/a/B', '/a/b'])` returns `[('/A/b', '/a/B'), ('/A/b', '/a/b')]`. If you need every colliding pair, group the input by `normalize_path` yourself; this library deliberately keeps the output linear in the number of collisions.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
